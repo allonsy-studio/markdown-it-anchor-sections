@@ -120,7 +120,7 @@ lorem ipsum
 
 ## License
 
-[Apache 2.0](./LICENSE) © [Cassondra Roberts](https://allons-y.llc)
+[Apache 2.0](./LICENSE) © [Cassondra Roberts](https://allons-y.studio)
 
 ## Inspiration
 
