@@ -120,7 +120,7 @@ lorem ipsum
 
 ## License
 
-[Apache 2.0](./LICENSE) © [Cassondra Roberts](https://allons-y.llc)
+[MPL-2.0](LICENSE) — use freely, modify as needed; changes to MPL-licensed files should be shared back under the same license.
 
 ## Inspiration
 
