@@ -11,6 +11,10 @@ jobs:
   build-validation:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Check out code
         uses: actions/checkout@v6
@@ -44,7 +48,7 @@ jobs:
 
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v3.0.2
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         with:
           recreate: true
           path: code-coverage-results.md
