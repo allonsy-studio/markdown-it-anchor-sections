@@ -19,17 +19,20 @@
   "main": "index.js",
   "scripts": {
     "coverage": "c8 yarn test",
-    "prepack": "pinst --disable",
+    "format": "eslint . --fix",
+    "lint": "eslint .",
     "postinstall": "husky || true",
     "postpack": "pinst --enable",
+    "postpublish": "git push && git push --tags",
+    "prepack": "pinst --disable",
     "prepublish": "yarn test",
     "release": "semantic-release",
-    "postpublish": "git push && git push --tags",
     "test": "node test.js"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
+    "@eslint/markdown": "^8.0.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
