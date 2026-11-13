@@ -25,9 +25,9 @@ yarn coverage    # c8 over the same suite
   case in `test.js`.
 - Keep code self-documenting. When a comment is warranted, keep it brief and explain
   only the *why* the code can't show; never restate what the code does.
-- Releases are automated by semantic-release on `main`, so the commit type drives the
-  version bump and the commit body is lifted into the release notes. Write the body
-  for a human reader.
+- Releases run through `opx release` on `main`. Add a changeset (`yarn changeset`) for
+  any change a user would notice; its summary becomes the changelog entry, so write it
+  for a human reader. The commit type no longer sets the version.
 
 ## Commits and pull requests
 

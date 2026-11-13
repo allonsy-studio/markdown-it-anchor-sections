@@ -62,14 +62,14 @@ Common types:
 
 | Type       | When to use                                 |
 | ---------- | ------------------------------------------- |
-| `feat`     | A new feature (triggers a minor release)    |
-| `fix`      | A bug fix (triggers a patch release)        |
+| `feat`     | A new feature                               |
+| `fix`      | A bug fix                                   |
 | `docs`     | Documentation changes only                  |
 | `test`     | Adding or updating tests                    |
 | `refactor` | Code restructuring without behaviour change |
 | `chore`    | Tooling, config, dependency updates         |
 
-A `BREAKING CHANGE:` footer or a `!` after the type (e.g. `feat!:`) triggers a major release.
+A `BREAKING CHANGE:` footer or a `!` after the type (e.g. `feat!:`) marks a breaking change. The commit type does not set the release version: add a changeset instead (see Release process).
 
 ### Pull requests
 
@@ -93,9 +93,15 @@ Type annotations are written as JSDoc rather than TypeScript. `jsconfig.json` en
 
 ## Release process
 
-Releases are fully automated via [semantic-release](https://semantic-release.gitbook.io/semantic-release/) — no manual versioning or changelog editing required. Merging to `main` triggers the release workflow, which analyses commit messages since the last release, bumps the version, generates the changelog entry, tags the commit, and publishes to npm.
+Releases are managed by [Changesets](https://github.com/changesets/changesets), run through `opx release`. For a change a user would notice, run:
 
-You do not need to update `package.json` version or `CHANGELOG.md` by hand.
+```sh
+yarn changeset
+```
+
+Pick the bump type (`patch` for a fix, `minor` for a feature, `major` for a breaking change), write a short summary, and commit the generated file in `.changeset/` with your code. Docs, tests, CI, and internal refactors need no changeset.
+
+When changesets land on `main`, the release workflow opens a version PR. Merging it publishes to npm, tags the release, and creates the GitHub release. You do not need to update the `package.json` version or `CHANGELOG.md` by hand.
 
 ## Code of Conduct
 
