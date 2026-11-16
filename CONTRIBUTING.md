@@ -74,7 +74,7 @@ A `BREAKING CHANGE:` footer or a `!` after the type (e.g. `feat!:`) marks a brea
 
 - Keep PRs focused — one logical change per PR
 - Update or add tests for every changed behaviour
-- The PR title should follow the same Conventional Commits format as your commit messages, since it becomes the squash commit message on merge
+- The PR title should follow the same Conventional Commits format as your commit messages, since it becomes the squash commit subject on merge, with your commit messages as its body
 - Fill out the PR description — explain what changed and why, not just what the diff shows
 
 ## Project structure
