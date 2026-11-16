@@ -148,6 +148,70 @@ An explicit id, like `{#intro}` from [markdown-it-attrs], always wins.
 5. If the header has attributes (classes, IDs, etc.), they are copied to the opening `<section>` tag.
 6. Automatically closes all remaining tags at the end of the document.
 
+## Styling the active section
+
+Each section carries the id, so a table-of-contents link like `<a href="#details">` points at the whole section, not just its heading. That is what lets you style the link for the section currently in view.
+
+### CSS only
+
+`scroll-target-group` marks the TOC as a group of scroll markers, & `:target-current` matches the link whose target is in view. No JavaScript:
+
+```css
+nav ol {
+	scroll-target-group: auto;
+}
+
+nav a:is(:target-current, [aria-current="location"]) {
+	text-decoration: underline;
+	text-decoration-thickness: 0.2em;
+}
+```
+
+`:target-current` is experimental & only ships in Chromium (135+) at the time of writing; check [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:target-current) for current support. The `:is()` wrapper matters: it ignores a selector the browser doesn't understand, so the rule still applies to `[aria-current="location"]` elsewhere.
+
+### Fallback for other browsers
+
+Set `aria-current` with an `IntersectionObserver` where `:target-current` isn't available. The observed band sits near the top of the viewport, & the last section inside it wins, so a nested section takes over from its parent:
+
+```js
+if (!CSS.supports("selector(:target-current)")) {
+	const links = new Map(
+		[...document.querySelectorAll("nav a[href^='#']")].map((a) => [a.hash.slice(1), a]),
+	);
+	const sections = [...links.keys()].map((id) => document.getElementById(id));
+	const visible = new Set();
+
+	const observer = new IntersectionObserver(
+		(entries) => {
+			for (const { target, isIntersecting } of entries) {
+				if (isIntersecting) visible.add(target);
+				else visible.delete(target);
+			}
+			const active = sections.filter((section) => visible.has(section)).at(-1);
+			for (const [id, link] of links) {
+				if (id === active?.id) link.setAttribute("aria-current", "location");
+				else link.removeAttribute("aria-current");
+			}
+		},
+		{ rootMargin: "-20% 0px -75% 0px" },
+	);
+
+	for (const section of sections) observer.observe(section);
+}
+```
+
+The page can't scroll a last section that is shorter than the viewport up to the band, so give it room, e.g. `section:last-of-type { min-height: 100vh; }`. The native `:target-current` doesn't need this.
+
+### Accessibility notes
+
+- **Sections are named regions.** A `<section>` becomes a `region` landmark when it has an accessible name ([HTML-AAM](https://www.w3.org/TR/html-aam-1.0/#el-section)), & this plugin names each one with `aria-labelledby`. A long document therefore has many landmarks.
+- **Name the TOC.** Use `<nav aria-label="On this page">` so it is distinguishable from other navigation.
+- **Don't rely on color or weight alone.** The active style above uses an underline: it survives forced-colors mode & doesn't change the link's width, so the TOC doesn't reflow as you scroll.
+- **`aria-current="location"`** is the right token for the current place in a page ([WAI-ARIA](https://www.w3.org/TR/wai-aria-1.2/#aria-current)). Don't also add a live region: announcing every scroll change is noise.
+- **Use `scroll-target-group`, not `scroll-marker-group`, for a TOC.** The latter gives the links `tablist` / `tab` semantics, which don't fit page navigation.
+- **The id lives on the section.** The heading gets `<id>-heading` instead. Put `scroll-margin-top` on `section[id]` so a fixed header doesn't cover the heading after a link is followed. Anything that expected `h2#id` needs updating.
+- **Smooth scrolling:** guard it with `@media (prefers-reduced-motion: no-preference)`.
+
 ## License
 
 [Apache 2.0](./LICENSE) © [Cassondra Roberts](https://allons-y.studio)
