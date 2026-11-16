@@ -4,7 +4,7 @@ import { describe, it } from "node:test";
 import { minify } from "html-minifier";
 import markdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
-import anchorSections from "./index.js";
+import anchorSections, { slugify } from "./index.js";
 
 const minifyOptions = { collapseWhitespace: true };
 
@@ -165,5 +165,68 @@ qwerty
 `);
 
 		cleanCompare(result, expected);
+	});
+
+	it("should join inline text & code spans with their spacing intact", () => {
+		const result = md.render("## Hello *big* world\n\n## Using `foo()` here\n");
+		assert.match(result, /<section id="hello-big-world">/);
+		assert.ok(result.includes("<section id=\"using-foo()-here\">"));
+	});
+
+	it("should suffix duplicate ids", () => {
+		const result = md.render("## Setup\n\n## Setup\n\n## Setup\n");
+		assert.deepEqual(
+			[...result.matchAll(/<section id="([^"]*)">/g)].map((m) => m[1]),
+			["setup", "setup-1", "setup-2"],
+		);
+	});
+
+	it("should keep an explicit id & reserve it against generated ones", () => {
+		const result = md.render("# One {#setup}\n\n# Setup\n");
+		assert.deepEqual(
+			[...result.matchAll(/<section id="([^"]*)">/g)].map((m) => m[1]),
+			["setup", "setup-1"],
+		);
+	});
+
+	it("should leave the id off a heading with no text", () => {
+		assert.doesNotMatch(md.render("# \n\ntext\n"), /id=/);
+	});
+
+	it("should accept a custom slugify", () => {
+		const custom = markdownIt().use(anchorSections, { slugify: (text) => `x-${slugify(text)}` });
+		assert.match(custom.render("# Hi\n"), /<section id="x-hi">/);
+	});
+
+	it("should encode ids for use as URL fragments", () => {
+		const headings = [
+			"Hello *big* world",
+			"Using `foo()` here",
+			"See [the docs](http://x) now",
+			"Café au lait",
+			"日本語の見出し",
+			"???",
+			"2024 plans",
+			"A.B (c)?",
+			"Foo & Bar",
+			"Hello   world",
+			"Setup",
+			"Setup",
+		];
+		const result = markdownIt().use(anchorSections).render(headings.map((h) => `## ${h}`).join("\n\n"));
+		assert.deepEqual([...result.matchAll(/<section id="([^"]*)"/g)].map((m) => m[1]), [
+			"hello-big-world",
+			"using-foo()-here",
+			"see-the-docs-now",
+			"caf%C3%A9-au-lait",
+			"%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%AE%E8%A6%8B%E5%87%BA%E3%81%97",
+			"%3F%3F%3F",
+			"2024-plans",
+			"a.b-(c)%3F",
+			"foo-%26-bar",
+			"hello-world",
+			"setup",
+			"setup-1",
+		]);
 	});
 });

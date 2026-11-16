@@ -25,22 +25,47 @@ function last(arr) {
 }
 
 /**
- * Clean the content of a token.
- * @param {string} content
+ * Default slugifier: lowercases, joins words with dashes, & percent-encodes the rest so the id works as a URL fragment.
+ * @param {string} text
  * @returns {string}
  */
-function cleanContent(content) {
-	const stringified = String(content.trim());
-	if (stringified.length === 0) return undefined;
-	return stringified.toLowerCase()?.replace(/[.)(\][?!\s]/g, "-")?.replace(/[^a-z0-9]+/g, "-")?.replace(/-+/g, "-")?.replace(/^-+|-+$/g, "")?.replace(/-+/g, "-");
+export function slugify(text) {
+	return encodeURIComponent(String(text).trim().toLowerCase().replace(/\s+/g, "-"));
+}
+
+/**
+ * Get the plain text of an inline token, keeping code spans.
+ * @param {import('markdown-it').Token | undefined} inline
+ * @returns {string}
+ */
+function headingText(inline) {
+	return (inline?.children ?? [])
+		.filter((child) => child.type === "text" || child.type === "code_inline")
+		.map((child) => child.content)
+		.join("");
+}
+
+/**
+ * Reserve an id, suffixing -1, -2, … on collision.
+ * @param {string} id
+ * @param {Set<string>} used
+ * @returns {string}
+ */
+function uniqueId(id, used) {
+	let unique = id;
+	for (let n = 1; used.has(unique); n++) unique = `${id}-${n}`;
+	used.add(unique);
+	return unique;
 }
 
 /**
  * Add anchor sections to the markdown.
  * @param {import('markdown-it').MarkdownIt} md
+ * @param {{ slugify?: (text: string) => string }} [options]
  * @returns {void}
  */
-export default function(md) {
+export default function(md, options = {}) {
+	const slug = options.slugify ?? slugify;
 
 	/**
    * Add sections to the markdown.
@@ -51,6 +76,7 @@ export default function(md) {
 		const tokens = [];  // output
 		const Token = state.Token;
 		const sections = [];
+		const usedIds = new Set();
 		let nestedLevel = 0;  // level of nesting
 
 		/**
@@ -131,21 +157,11 @@ export default function(md) {
 					// Remove the id attribute from the token
 					token.attrs.splice(idx, 1);
 				}
-				if (!id) {
-					let content = cleanContent(token.content ?? "");
-					if (!content && state.tokens[i+1]?.children) {
-						content = "";
-						// Iterate through the children of the token
-						for (const child of state.tokens[i+1].children) {
-							if (child.type == "text") {
-								content += cleanContent(child.content ?? "");
-							}
-						}
-
-						content = cleanContent(content);
-					}
-
-					if (content) id = encodeURIComponent(content);
+				if (id) {
+					usedIds.add(id);
+				} else {
+					const text = slug(headingText(state.tokens[i + 1]));
+					if (text) id = uniqueId(text, usedIds);
 				}
 
 				// create a section object
