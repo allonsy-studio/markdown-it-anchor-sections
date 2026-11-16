@@ -176,12 +176,12 @@ The page can't scroll a last section that is shorter than the viewport up to the
 
 ### Accessibility notes
 
-- **Unnamed sections aren't landmarks.** A `<section>` only becomes a `region` landmark when it has an accessible name ([HTML-AAM](https://www.w3.org/TR/html-aam-1.0/#el-section)). This plugin adds none on purpose: a landmark per heading would flood a screen reader's landmark list.
+- **Sections are named regions.** A `<section>` becomes a `region` landmark when it has an accessible name ([HTML-AAM](https://www.w3.org/TR/html-aam-1.0/#el-section)), & this plugin names each one with `aria-labelledby`. A long document therefore has many landmarks.
 - **Name the TOC.** Use `<nav aria-label="On this page">` so it is distinguishable from other navigation.
 - **Don't rely on color or weight alone.** The active style above uses an underline: it survives forced-colors mode & doesn't change the link's width, so the TOC doesn't reflow as you scroll.
 - **`aria-current="location"`** is the right token for the current place in a page ([WAI-ARIA](https://www.w3.org/TR/wai-aria-1.2/#aria-current)). Don't also add a live region: announcing every scroll change is noise.
 - **Use `scroll-target-group`, not `scroll-marker-group`, for a TOC.** The latter gives the links `tablist` / `tab` semantics, which don't fit page navigation.
-- **The id lives on the section, not the heading.** Put `scroll-margin-top` on `section[id]` so a fixed header doesn't cover the heading after a link is followed. Anything that expected `h2#id` (scripts, `aria-labelledby` pointing at the heading) needs updating.
+- **The id lives on the section.** The heading gets `<id>-heading` instead. Put `scroll-margin-top` on `section[id]` so a fixed header doesn't cover the heading after a link is followed. Anything that expected `h2#id` needs updating.
 - **Smooth scrolling:** guard it with `@media (prefers-reduced-motion: no-preference)`.
 
 ## License
