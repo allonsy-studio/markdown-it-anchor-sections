@@ -1,0 +1,70 @@
+{
+	"name": "markdown-it-anchor-sections",
+	"text": "markdown-it-anchor-sections",
+	"concept": "Rail: a table of contents with the active section's rail in the accent.",
+	"font": {
+		"file": "../../allonsy-studio/.github/assets/fonts/space-grotesk-var.woff2",
+		"axes": {
+			"wght": 700
+		}
+	},
+	"palette": {
+		"ink": {
+			"light": "#16181d",
+			"dark": "#eceef3",
+			"role": "text"
+		},
+		"accent": {
+			"light": "#d22d6f",
+			"dark": "#ff7aa8",
+			"role": "graphic"
+		}
+	},
+	"paint": {
+		"*": "ink"
+	},
+	"decorations": [
+		{
+			"x": -0.86,
+			"y": -0.7,
+			"width": 0.08,
+			"height": 0.74,
+			"paint": "accent",
+			"skew": false
+		},
+		{
+			"x": -0.52,
+			"y": -0.7,
+			"width": 0.3,
+			"height": 0.11,
+			"paint": "ink",
+			"skew": false
+		},
+		{
+			"x": -0.52,
+			"y": -0.42,
+			"width": 0.22,
+			"height": 0.11,
+			"paint": "ink",
+			"skew": false
+		},
+		{
+			"x": -0.52,
+			"y": -0.14,
+			"width": 0.26,
+			"height": 0.11,
+			"paint": "ink",
+			"skew": false
+		}
+	],
+	"favicon": {
+		"tile": "accent",
+		"ink": "#ffffff",
+		"fit": "x-height",
+		"glyph": "m"
+	},
+	"og": {
+		"tagline": "A section for every heading.",
+		"url": "allonsy-studio.github.io/markdown-it-anchor-sections"
+	}
+}

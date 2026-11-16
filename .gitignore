@@ -58,3 +58,8 @@ public
 
 # Claude
 .claude/worktrees/*
+
+# Docs site
+docs/_site
+docs/_a11y
+docs/cypress/screenshots
