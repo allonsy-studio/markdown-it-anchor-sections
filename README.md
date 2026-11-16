@@ -26,11 +26,11 @@ More info here.
 renders to:
 
 ```html
-<section id="introduction">
-	<h1>Introduction</h1>
+<section id="introduction" aria-labelledby="introduction-heading">
+	<h1 id="introduction-heading">Introduction</h1>
 	<p>Hello world.</p>
-	<section id="details">
-		<h2>Details</h2>
+	<section id="details" aria-labelledby="details-heading">
+		<h2 id="details-heading">Details</h2>
 		<p>More info here.</p>
 	</section>
 </section>
@@ -119,8 +119,8 @@ lorem ipsum
 **Output:**
 
 ```html
-<section id="intro">
-	<h1 class="jumbotron">Great stuff</h1>
+<section id="intro" aria-labelledby="intro-heading">
+	<h1 class="jumbotron" id="intro-heading">Great stuff</h1>
 	<p>lorem ipsum</p>
 </section>
 ```
@@ -138,6 +138,10 @@ const parser = md().use(anchorSections, {
 ```
 
 An explicit id, like `{#intro}` from [markdown-it-attrs], always wins.
+
+## Accessible names
+
+Each section is named by its heading: the section gets `aria-labelledby`, & the heading gets the section's id plus `-heading` for it to point at (see the output above). Assistive technology then exposes every section as a `region` landmark, so a long document produces many landmarks. A heading with an explicit id (`{#intro}`) keeps that id on the section.
 
 ## How it works
 
