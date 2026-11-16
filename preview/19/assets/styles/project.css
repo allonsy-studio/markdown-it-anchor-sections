@@ -1,6 +1,6 @@
 /* Project styles: the accent & fonts. Edit freely; the scaffold never overwrites this file. */
 :root {
-	--norn-ui-accent: #2346d4;
+	--norn-ui-accent: #d22d6f;
 	/* Fonts: Instrument Sans is bundled; uncomment it, or load your own (@font-face or @import) & put the family first.
 	--norn-font-body: "Instrument Sans", "Instrument Sans Fallback", ui-sans-serif, system-ui, sans-serif; */
 }
