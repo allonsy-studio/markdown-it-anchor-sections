@@ -5,6 +5,28 @@ __metadata:
   version: 9
   cacheKey: 10c0
 
+"@allons-y/markdown-it-anchor-sections@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@allons-y/markdown-it-anchor-sections@workspace:."
+  dependencies:
+    "@allons-y/opx-cli": "npm:^0.2.0"
+    "@allons-y/opx-release": "npm:^0.1.1"
+    "@commitlint/cli": "npm:^20.5.0"
+    "@commitlint/config-conventional": "npm:^20.5.0"
+    "@eslint/markdown": "npm:^8.0.2"
+    c8: "npm:^12.0.0"
+    eslint: "npm:^10.2.1"
+    html-minifier: "npm:^4.0.0"
+    husky: "npm:^9.1.7"
+    lint-staged: "npm:^16.4.0"
+    markdown-it: "npm:^14.1.1"
+    markdown-it-attrs: "npm:^4.3.1"
+    pinst: "npm:^3.0.0"
+    prettier: "npm:^3.8.3"
+    prettier-package-json: "npm:^2.8.0"
+  languageName: unknown
+  linkType: soft
+
 "@allons-y/opx-cli@npm:^0.2.0":
   version: 0.2.0
   resolution: "@allons-y/opx-cli@npm:0.2.0"
@@ -2467,28 +2489,6 @@ __metadata:
   checksum: 10c0/69b98a6c0b8e5c4fe9acb61608a9fbcfca1756d910f51e5dbe7a9e5cfb74fca9b8a0c8a0ffdf1294a740826c1ab4871d5bf3f62f72a3049e5eac6541ddffed68
   languageName: node
   linkType: hard
-
-"markdown-it-anchor-sections@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "markdown-it-anchor-sections@workspace:."
-  dependencies:
-    "@allons-y/opx-cli": "npm:^0.2.0"
-    "@allons-y/opx-release": "npm:^0.1.1"
-    "@commitlint/cli": "npm:^20.5.0"
-    "@commitlint/config-conventional": "npm:^20.5.0"
-    "@eslint/markdown": "npm:^8.0.2"
-    c8: "npm:^12.0.0"
-    eslint: "npm:^10.2.1"
-    html-minifier: "npm:^4.0.0"
-    husky: "npm:^9.1.7"
-    lint-staged: "npm:^16.4.0"
-    markdown-it: "npm:^14.1.1"
-    markdown-it-attrs: "npm:^4.3.1"
-    pinst: "npm:^3.0.0"
-    prettier: "npm:^3.8.3"
-    prettier-package-json: "npm:^2.8.0"
-  languageName: unknown
-  linkType: soft
 
 "markdown-it-attrs@npm:^4.3.1":
   version: 4.3.1

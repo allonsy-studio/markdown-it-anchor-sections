@@ -1,4 +1,4 @@
-# markdown-it-anchor-sections
+# @allons-y/markdown-it-anchor-sections
 
 A markdown-it plugin that wraps each heading and everything under it in a `<section>`,
 closing when the next heading of the same level arrives. The point is to give
