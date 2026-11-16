@@ -61,7 +61,21 @@ pnpm add @allons-y/markdown-it-anchor-sections
 bun add @allons-y/markdown-it-anchor-sections
 ```
 
-This package was published as `markdown-it-anchor-sections` before it moved to the `@allons-y` scope.
+## Moving from the unscoped package
+
+This package was published as `markdown-it-anchor-sections` before it moved to the `@allons-y` scope. The unscoped package no longer receives updates & the API is unchanged. Swap the dependency in `package.json` & the import:
+
+```diff
+ "dependencies": {
+-	"markdown-it-anchor-sections": "^1.0.1",
++	"@allons-y/markdown-it-anchor-sections": "^1.0.1",
+ }
+```
+
+```diff
+-import anchorSections from "markdown-it-anchor-sections";
++import anchorSections from "@allons-y/markdown-it-anchor-sections";
+```
 
 ## Usage
 
