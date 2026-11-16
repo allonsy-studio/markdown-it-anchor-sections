@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { describe, it, beforeEach } from "node:test";
+import { describe, it } from "node:test";
 
 import { minify } from "html-minifier";
 import markdownIt from "markdown-it";
@@ -22,7 +22,7 @@ const md = markdownIt().use(markdownItAttrs).use(anchorSections);
 
 describe("markdown-it-anchor-sections", () => {
 	it("should add sections to headers", () => {
-    const expected = `<section id="header"><h1>header</h1><p>lorem</p></section>`;
+		const expected = "<section id=\"header\"><h1>header</h1><p>lorem</p></section>";
 		const result = md.render(`
 # header
 lorem
@@ -32,7 +32,7 @@ lorem
 	});
 
 	it("should maintain header attributes from other plugins", () => {
-		const expected = `<section id="header"><h1 class="red">header</h1><p>lorem</p></section>`;
+		const expected = "<section id=\"header\"><h1 class=\"red\">header</h1><p>lorem</p></section>";
 		const result = md.render(`
 # header {.red}
 lorem
@@ -42,7 +42,7 @@ lorem
 	});
 
 	it("should close sections when a new header is of same or lower level", () => {
-		const expected = `<section id="asdf"><h2>asdf</h2><p>lorem</p></section><section id="fdsa"><h2>fdsa</h2><p>ipsum</p></section>`;
+		const expected = "<section id=\"asdf\"><h2>asdf</h2><p>lorem</p></section><section id=\"fdsa\"><h2>fdsa</h2><p>ipsum</p></section>";
 		const result = md.render(`
 ## asdf
 lorem

@@ -37,14 +37,13 @@ All new functionality must be accompanied by tests. Look through the existing te
 
 ### Linting and formatting
 
-Code style is enforced by ESLint and Prettier. Both run automatically on staged files before every commit via `lint-staged`. You can also run them manually:
+Code style is enforced by `opx lint`, which runs ESLint over JavaScript and Markdown. It runs automatically on staged files before every commit via `lint-staged`. You can also run it manually:
 
 ```sh
-yarn eslint .
-yarn prettier --check .
+yarn lint
 ```
 
-If Prettier flags a file, run `yarn prettier --write .` to fix it automatically.
+To fix what can be fixed automatically, run `yarn format`.
 
 ### Commit messages
 
