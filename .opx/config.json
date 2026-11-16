@@ -1,6 +1,10 @@
 {
   "$schema": "https://unpkg.com/@allons-y/opx/schema/config.json",
   "version": 1,
+  "lint": {
+    "js": true,
+    "md": "eslint.config.js"
+  },
   "release": true,
   "test": false
 }

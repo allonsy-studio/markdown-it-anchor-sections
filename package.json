@@ -17,14 +17,18 @@
   },
   "type": "module",
   "main": "index.js",
+  "files": [
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE",
+    "index.js"
+  ],
   "scripts": {
     "changeset": "opx release add",
     "coverage": "c8 yarn test",
-    "format": "eslint . --fix",
-    "lint": "eslint .",
-    "postinstall": "husky || true",
-    "postpack": "pinst --enable",
-    "prepack": "pinst --disable",
+    "format": "opx lint --fix",
+    "lint": "opx lint",
+    "prepare": "husky",
     "prepublish": "yarn test",
     "release": "opx release publish",
     "test": "node test.js",
@@ -32,27 +36,20 @@
   },
   "devDependencies": {
     "@allons-y/opx-cli": "^0.2.0",
+    "@allons-y/opx-lint-js": "^1.0.0",
+    "@allons-y/opx-lint-md": "^0.1.0",
     "@allons-y/opx-release": "^0.1.1",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
-    "@eslint/markdown": "^8.0.2",
     "c8": "^12.0.0",
-    "eslint": "^10.2.1",
     "html-minifier": "^4.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "markdown-it": "^14.1.1",
     "markdown-it-attrs": "^4.3.1",
-    "pinst": "^3.0.0",
     "prettier": "^3.8.3",
     "prettier-package-json": "^2.8.0"
   },
-  "files": [
-    "CHANGELOG.md",
-    "README.md",
-    "LICENSE",
-    "index.js"
-  ],
   "keywords": [
     "markdown-it",
     "markdown-it-plugin"
@@ -74,10 +71,5 @@
       "url": "https://www.buymeacoffee.com/castastrophe"
     }
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "packageManager": "yarn@4.14.1"
 }

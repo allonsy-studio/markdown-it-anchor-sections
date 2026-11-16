@@ -23,6 +23,7 @@ node_modules/
 # Plugin caches
 .cache
 .eslintcache
+.opx/cache
 .stylelintcache
 .netlify
 
