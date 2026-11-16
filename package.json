@@ -1,5 +1,5 @@
 {
-  "name": "markdown-it-anchor-sections",
+  "name": "@allons-y/markdown-it-anchor-sections",
   "version": "1.0.1",
   "description": "Create anchor sections from markdown headers",
   "license": "Apache-2.0",
@@ -7,13 +7,13 @@
   "contributors": [
     "Arve Seljebu"
   ],
-  "homepage": "https://github.com/castastrophe/markdown-it-anchor-sections#readme",
+  "homepage": "https://github.com/allonsy-studio/markdown-it-anchor-sections#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/castastrophe/markdown-it-anchor-sections.git"
+    "url": "git+https://github.com/allonsy-studio/markdown-it-anchor-sections.git"
   },
   "bugs": {
-    "url": "https://github.com/castastrophe/markdown-it-anchor-sections/issues"
+    "url": "https://github.com/allonsy-studio/markdown-it-anchor-sections/issues"
   },
   "type": "module",
   "main": "index.js",
