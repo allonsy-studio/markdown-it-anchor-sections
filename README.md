@@ -129,8 +129,8 @@ lorem ipsum
 This project was inspired by [markdown-it-header-sections](https://github.com/arve0/markdown-it-header-sections).
 
 [markdown-it-attrs]: https://github.com/arve0/markdown-it-attrs
-[github-image]: https://github.com/castastrophe/markdown-it-anchor-sections/actions/workflows/test.yml/badge.svg?branch=main
-[github-url]: https://github.com/castastrophe/markdown-it-anchor-sections/actions/workflows/test.yml
+[github-image]: https://github.com/allonsy-studio/markdown-it-anchor-sections/actions/workflows/test.yml/badge.svg?branch=main
+[github-url]: https://github.com/allonsy-studio/markdown-it-anchor-sections/actions/workflows/test.yml
 [npm-image]: https://img.shields.io/npm/v/@allons-y/markdown-it-anchor-sections.svg
 [npm-url]: https://www.npmjs.com/package/@allons-y/markdown-it-anchor-sections
 [conventional-commits-image]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
