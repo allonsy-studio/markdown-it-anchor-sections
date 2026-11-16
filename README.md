@@ -68,7 +68,7 @@ This package was published as `markdown-it-anchor-sections` before it moved to t
 ```diff
  "dependencies": {
 -	"markdown-it-anchor-sections": "^1.0.1",
-+	"@allons-y/markdown-it-anchor-sections": "^1.0.0",
++	"@allons-y/markdown-it-anchor-sections": "^1.0.1",
  }
 ```
 
