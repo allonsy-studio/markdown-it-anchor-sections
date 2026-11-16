@@ -22,7 +22,7 @@ const md = markdownIt().use(markdownItAttrs).use(anchorSections);
 
 describe("markdown-it-anchor-sections", () => {
 	it("should add sections to headers", () => {
-		const expected = "<section id=\"header\"><h1>header</h1><p>lorem</p></section>";
+		const expected = "<section id=\"header\" aria-labelledby=\"header-heading\"><h1 id=\"header-heading\">header</h1><p>lorem</p></section>";
 		const result = md.render(`
 # header
 lorem
@@ -32,7 +32,7 @@ lorem
 	});
 
 	it("should maintain header attributes from other plugins", () => {
-		const expected = "<section id=\"header\"><h1 class=\"red\">header</h1><p>lorem</p></section>";
+		const expected = "<section id=\"header\" aria-labelledby=\"header-heading\"><h1 class=\"red\" id=\"header-heading\">header</h1><p>lorem</p></section>";
 		const result = md.render(`
 # header {.red}
 lorem
@@ -42,7 +42,7 @@ lorem
 	});
 
 	it("should close sections when a new header is of same or lower level", () => {
-		const expected = "<section id=\"asdf\"><h2>asdf</h2><p>lorem</p></section><section id=\"fdsa\"><h2>fdsa</h2><p>ipsum</p></section>";
+		const expected = "<section id=\"asdf\" aria-labelledby=\"asdf-heading\"><h2 id=\"asdf-heading\">asdf</h2><p>lorem</p></section><section id=\"fdsa\" aria-labelledby=\"fdsa-heading\"><h2 id=\"fdsa-heading\">fdsa</h2><p>ipsum</p></section>";
 		const result = md.render(`
 ## asdf
 lorem
@@ -55,20 +55,20 @@ ipsum
 
 	it("should nest sections", () => {
 		const expected = `
-<section id="header-1">
-  <h1>Header 1</h1>
+<section id="header-1" aria-labelledby="header-1-heading">
+  <h1 id="header-1-heading">Header 1</h1>
   <p>Text.</p>
-  <section id="header-2">
-    <h3>Header 2</h3>
+  <section id="header-2" aria-labelledby="header-2-heading">
+    <h3 id="header-2-heading">Header 2</h3>
     <p>Lorem?</p>
   </section>
-  <section id="header-3">
-    <h2>Header 3</h2>
+  <section id="header-3" aria-labelledby="header-3-heading">
+    <h2 id="header-3-heading">Header 3</h2>
     <p>Ipsum.</p>
   </section>
 </section>
-<section id="last-header">
-  <h1>Last header</h1>
+<section id="last-header" aria-labelledby="last-header-heading">
+  <h1 id="last-header-heading">Last header</h1>
   <p>Markdown rules!</p>
 </section>`;
 		const result = md.render(`
@@ -86,12 +86,12 @@ Markdown rules!
 
 	it("should parse incorrect order of headers", () => {
 		const expected = `
-<section id="header-4">
-  <h4>Header 4</h4>
+<section id="header-4" aria-labelledby="header-4-heading">
+  <h4 id="header-4-heading">Header 4</h4>
   <p>Text.</p>
 </section>
-<section id="header-3">
-  <h3>Header 3</h3>
+<section id="header-3" aria-labelledby="header-3-heading">
+  <h3 id="header-3-heading">Header 3</h3>
   <p>Hello!</p>
 </section>`;
 
@@ -107,14 +107,14 @@ Hello!
 		const expected = `
 <ul>
   <li>foo
-    <section id="header-2">
-      <h3>Header 2</h3>
+    <section id="header-2" aria-labelledby="header-2-heading">
+      <h3 id="header-2-heading">Header 2</h3>
       Lorem?
     </section>
   </li>
   <li>bar
-    <section id="last-header">
-      <h2>Last header</h2>
+    <section id="last-header" aria-labelledby="last-header-heading">
+      <h2 id="last-header-heading">Last header</h2>
       Markdown rules!
     </section>
   </li>
@@ -133,12 +133,12 @@ Hello!
 
 	it("should close sections when a new header is of same level", () => {
 		const expected = `
-<section id="asdf">
-  <h3>asdf</h3>
+<section id="asdf" aria-labelledby="asdf-heading">
+  <h3 id="asdf-heading">asdf</h3>
   <p>lorem</p>
 </section>
-<section id="fdsa">
-  <h3>fdsa</h3>
+<section id="fdsa" aria-labelledby="fdsa-heading">
+  <h3 id="fdsa-heading">fdsa</h3>
   <p>ipsum</p>
 </section>
 `;
@@ -154,8 +154,8 @@ ipsum
 
 	it("should move, not copy, ID from header", () => {
 		const expected = `
-<section id="asdf">
-  <h1>asdf</h1>
+<section id="asdf" aria-labelledby="asdf-heading">
+  <h1 id="asdf-heading">asdf</h1>
   <p>qwerty</p>
 </section>
 `;
@@ -169,14 +169,14 @@ qwerty
 
 	it("should join inline text & code spans with their spacing intact", () => {
 		const result = md.render("## Hello *big* world\n\n## Using `foo()` here\n");
-		assert.match(result, /<section id="hello-big-world">/);
-		assert.ok(result.includes("<section id=\"using-foo()-here\">"));
+		assert.match(result, /<section id="hello-big-world"/);
+		assert.ok(result.includes("<section id=\"using-foo()-here\""));
 	});
 
 	it("should suffix duplicate ids", () => {
 		const result = md.render("## Setup\n\n## Setup\n\n## Setup\n");
 		assert.deepEqual(
-			[...result.matchAll(/<section id="([^"]*)">/g)].map((m) => m[1]),
+			[...result.matchAll(/<section id="([^"]*)"/g)].map((m) => m[1]),
 			["setup", "setup-1", "setup-2"],
 		);
 	});
@@ -184,7 +184,7 @@ qwerty
 	it("should keep an explicit id & reserve it against generated ones", () => {
 		const result = md.render("# One {#setup}\n\n# Setup\n");
 		assert.deepEqual(
-			[...result.matchAll(/<section id="([^"]*)">/g)].map((m) => m[1]),
+			[...result.matchAll(/<section id="([^"]*)"/g)].map((m) => m[1]),
 			["setup", "setup-1"],
 		);
 	});
@@ -195,7 +195,7 @@ qwerty
 
 	it("should accept a custom slugify", () => {
 		const custom = markdownIt().use(anchorSections, { slugify: (text) => `x-${slugify(text)}` });
-		assert.match(custom.render("# Hi\n"), /<section id="x-hi">/);
+		assert.match(custom.render("# Hi\n"), /<section id="x-hi"/);
 	});
 
 	it("should encode ids for use as URL fragments", () => {
@@ -228,5 +228,36 @@ qwerty
 			"setup",
 			"setup-1",
 		]);
+	});
+
+	it("should label each section with its heading", () => {
+		const expected = `
+<section id="intro" aria-labelledby="intro-heading">
+  <h1 id="intro-heading">Intro</h1>
+  <section id="details" aria-labelledby="details-heading">
+    <h2 id="details-heading">Details</h2>
+  </section>
+</section>`;
+		cleanCompare(md.render("# Intro\n\n## Details\n"), expected);
+	});
+
+	it("should derive the heading id from an explicit id", () => {
+		const expected = "<section id=\"intro\" aria-labelledby=\"intro-heading\"><h1 class=\"big\" id=\"intro-heading\">Welcome</h1></section>";
+		cleanCompare(md.render("# Welcome {.big #intro}\n"), expected);
+	});
+
+	it("should keep heading ids unique", () => {
+		const result = md.render("## Setup\n\n## Setup heading\n\n## Setup\n");
+		const ids = [...result.matchAll(/ id="([^"]*)"/g)].map((m) => m[1]);
+		assert.equal(new Set(ids).size, ids.length);
+		assert.deepEqual(
+			[...result.matchAll(/aria-labelledby="([^"]*)"/g)].map((m) => m[1]),
+			[...result.matchAll(/<h2 id="([^"]*)"/g)].map((m) => m[1]),
+		);
+	});
+
+	it("should not label a section without an id", () => {
+		const result = md.render("# \n\ntext\n");
+		assert.doesNotMatch(result, /aria-labelledby/);
 	});
 });

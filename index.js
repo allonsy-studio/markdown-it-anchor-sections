@@ -87,7 +87,7 @@ export default function(md, options = {}) {
 		function openSection(section) {
 			const t = new Token("section_open", "section", 1);
 			t.block = true;  // section is a block-level element
-			t.attrs = section?.id ? [[ "id", section?.id ]] : [];
+			t.attrs = section.id ? [["id", section.id], ["aria-labelledby", section.headingId]] : [];
 			return t;
 		}
 
@@ -164,9 +164,17 @@ export default function(md, options = {}) {
 					if (text) id = uniqueId(text, usedIds);
 				}
 
+				// the section takes the id, so the heading needs its own for aria-labelledby
+				let headingId;
+				if (id) {
+					headingId = uniqueId(`${id}-heading`, usedIds);
+					token.attrSet("id", headingId);
+				}
+
 				// create a section object
 				const section = {
 					id,
+					headingId,
 					header: headingLevel(token.tag),
 					nesting: nestedLevel,
 				};
