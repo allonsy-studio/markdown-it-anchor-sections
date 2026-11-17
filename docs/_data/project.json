@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/allonsy-studio/webc-resources/main/packages/webc-patterns/schema/project.schema.json",
 	"tagline": "A section for every heading.",
-	"lede": "Wrap each heading & everything under it in a section that carries the heading's id. Intersection observers get a real element to watch, so a table of contents can show where the reader is.",
+	"lede": "Wrap each heading & everything under it in a section that carries the heading's ID. Intersection observers get a real element to watch, so a table of contents can show where the reader is.",
 	"install": "npm install @allons-y/markdown-it-anchor-sections",
 	"usage": {
 		"language": "js",
@@ -14,12 +14,12 @@
 			"description": "Each heading & everything under it sits in a section, nested by heading level, so an IntersectionObserver has something to watch."
 		},
 		{
-			"title": "Ids that make good link targets",
-			"description": "Section ids come from the full heading text & are percent-encoded, so every one works in a URL, even for non-Latin headings. Duplicate headings are numbered."
+			"title": "IDs that make good link targets",
+			"description": "Section IDs come from the full heading text & are percent-encoded, so every one works in a URL, even for non-Latin headings. Duplicate headings are numbered."
 		},
 		{
 			"title": "Active styles in plain CSS",
-			"description": "With the id on the section, the :target-current selector can highlight the link for the section in view. A small observer covers browsers without it."
+			"description": "With the ID on the section, the :target-current selector can highlight the link for the section in view. A small observer covers browsers without it."
 		},
 		{
 			"title": "Named regions for assistive technology",
@@ -27,11 +27,11 @@
 		},
 		{
 			"title": "Works with markdown-it-attrs",
-			"description": "Classes & an explicit id set on a heading carry over to its section."
+			"description": "Classes & an explicit ID set on a heading carry over to its section."
 		},
 		{
 			"title": "No configuration",
-			"description": "Add it with use() & it works. Pass a slugify function when you want different ids."
+			"description": "Add it with use() & it works. Pass a slugify function when you want different IDs."
 		}
 	],
 	"logo": "wordmark.svg",
