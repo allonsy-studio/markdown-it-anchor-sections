@@ -29,7 +29,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
 
@@ -37,7 +37,7 @@ jobs:
         run: corepack enable
 
       - name: Use Node LTS version
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: .nvmrc
           cache: yarn
@@ -62,7 +62,7 @@ jobs:
         run: echo "key=sample-comment-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
 
       - name: Save the comment for the comment job
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ${{ runner.temp }}/sample
           key: ${{ steps.key.outputs.key }}
@@ -79,7 +79,7 @@ jobs:
     steps:
       # No checkout: this job never runs the project's code.
       - name: Restore the comment
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ${{ runner.temp }}/sample
           key: ${{ needs.render.outputs.key }}
