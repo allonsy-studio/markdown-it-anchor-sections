@@ -1,0 +1,101 @@
+name: Sample comment
+
+# Comments a rendered sample & the preview link on a PR that changes the plugin or the site.
+# `render` runs the PR's code with a read-only token; `comment` holds the write token & never runs it.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - index.js
+      - docs/**
+      - .github/scripts/sample-comment.js
+      - .github/workflows/sample-comment.yml
+
+permissions: {}
+
+jobs:
+  render:
+    name: Render
+    # Skipped for forks & Dependabot: their tokens are read-only.
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      key: ${{ steps.key.outputs.key }}
+    concurrency:
+      group: sample-comment-render-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Node LTS version
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Fetch the base plugin
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          git fetch --depth=1 origin "$BASE_REF"
+          git show FETCH_HEAD:index.js > "$RUNNER_TEMP/base-index.js"
+
+      - name: Render the sample
+        env:
+          PREVIEW_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/preview/${{ github.event.pull_request.number }}/
+        run: node .github/scripts/sample-comment.js "$RUNNER_TEMP/sample/body.md" "$PREVIEW_URL" "$RUNNER_TEMP/base-index.js"
+
+      - name: Name the cache entry
+        id: key
+        run: echo "key=sample-comment-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Save the comment for the comment job
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ runner.temp }}/sample
+          key: ${{ steps.key.outputs.key }}
+
+  comment:
+    name: Comment
+    needs: render
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    concurrency:
+      group: sample-comment-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      # No checkout: this job never runs the project's code.
+      - name: Restore the comment
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ runner.temp }}/sample
+          key: ${{ needs.render.outputs.key }}
+          fail-on-cache-miss: true
+
+      - name: Post or update the comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          FILE: ${{ runner.temp }}/sample/body.md
+        run: |
+          marker="<!-- sample-comment -->"
+          id="$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate \
+            --jq ".[] | select(.body | contains(\"$marker\")) | .id" | sed -n 1p)"
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$id" -F body=@"$FILE" > /dev/null
+          else
+            gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -F body=@"$FILE" > /dev/null
+          fi

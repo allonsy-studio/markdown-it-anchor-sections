@@ -17,7 +17,16 @@ with `--no-verify`.
 yarn install
 yarn test        # runs test.js directly under node
 yarn coverage    # c8 over the same suite
+yarn docs:build  # the landing site in docs/ (Eleventy)
+yarn docs:start  # serve it locally
+yarn docs:test   # Cypress + axe on the built site
 ```
+
+The site is scaffolded by the studio's `oss-docs-site` skill: its config & Cypress files are
+owned by the scaffold, so change copy in `docs/_data/project.json` & the accent in
+`docs/content/assets/styles/project.css` instead. A PR that touches `index.js` or `docs/`
+gets a sample-output comment from `.github/workflows/sample-comment.yml`, & every PR gets a
+preview link from the Pages workflow.
 
 ## Conventions
 
